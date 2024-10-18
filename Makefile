@@ -7,7 +7,9 @@ CC				=	cc
 F_LFT			=	-L$(LIBFT_DIR) -lft
 INC				=	-I$(LIBFT_DIR)
 INCLUDE			=	include/cub3d.h
-SRC				=	main.c c \ $(EXEC_DIR)pars_file.c $(EXEC_DIR)pars_map.c \
+SRC				=	main.c \ $(EXEC_DIR)pars_file.c $(EXEC_DIR)pars_map.c \
+					$(EXEC_DIR)add_data.c $(EXEC_DIR)check_texture.c $(EXEC_DIR)my_malloc.c \
+					$(EXEC_DIR)pars_walls.c $(EXEC_DIR)parsing_cub.c  $(EXEC_DIR)parsing_utils.c \
 
 OBJ				=	$(SRC:.c=.o)
 
@@ -17,10 +19,10 @@ $(LIBFT)		:
 				@$(MAKE) -C $(LIBFT_DIR)
 
 %.o				: %.c $(INCLUDE)
-				$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+				$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME)			: $(OBJ) 
-				$(CC) $(OBJ) $(F_LFT) -lreadline $(CFLAGS) -o $(NAME)
+				$(CC) $(OBJ) $(CFLAGS) -o $(NAME)
 
 clean			:
 				@make clean -C $(LIBFT_DIR)

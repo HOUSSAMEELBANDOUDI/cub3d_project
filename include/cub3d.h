@@ -6,7 +6,7 @@
 /*   By: hel-band <hel-band@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:15:36 by hel-band          #+#    #+#             */
-/*   Updated: 2024/10/16 18:38:10 by hel-band         ###   ########.fr       */
+/*   Updated: 2024/10/18 11:30:58 by hel-band         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ typedef struct s_data
 // *** parsing ***:
 
 int		print_error(char *arg, char *str, int fd);
-int		ft_pars_file(char *arg, int ac);
+int		ft_pars_file(char *arg);
 int		ft_pars_map(t_data *data);
 void	ft_find_content(t_data *data);
 void	ft_spl_free(char **spl);
@@ -101,7 +101,12 @@ void    ft_add_textures(t_data *data);
 void    ft_add_colors(t_data *data);
 int		ft_len_map(t_data  *data);
 int		ft_find_newline(char *str);
-int	ft_find_char(char x, char *str);
+int		ft_find_char(char x, char *str);
 void    ft_find_player_pos(t_map *map);
+int ft_pars_wall(char **cub, int row);
+int ft_surrond_wall(char **cub, int row, int col);
+int	ft_check_wall(char **cub, int row, int col);
+void    ft_last_pars_cub(t_map map);
+void	ft_check_cub(t_map map, int row, int col);
 
 #endif

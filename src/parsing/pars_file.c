@@ -6,7 +6,7 @@
 /*   By: hel-band <hel-band@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:20:18 by hel-band          #+#    #+#             */
-/*   Updated: 2024/10/16 18:12:02 by hel-band         ###   ########.fr       */
+/*   Updated: 2024/10/18 11:30:51 by hel-band         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,10 @@ static int ft_find_cub(char *arg)
     return (0);
 }
 
-int ft_pars_file(char *arg, int ac)
+int ft_pars_file(char *arg)
 {
     int fd;
     
-    if (ac != 2)
-        print_error(arg, "numberd argument not valid\n", 1);
     if (ft_derctory(arg) == 1)
         print_error(arg, "Is a directory", 1);
     fd = open(arg, O_RDONLY);
