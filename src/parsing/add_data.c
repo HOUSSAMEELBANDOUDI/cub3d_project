@@ -6,11 +6,11 @@
 /*   By: hel-band <hel-band@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 12:11:11 by hel-band          #+#    #+#             */
-/*   Updated: 2024/10/16 18:35:18 by hel-band         ###   ########.fr       */
+/*   Updated: 2024/10/19 10:49:38 by hel-band         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d.h"
+#include "../include/cub3d.h"
 
 void    ft_add_textures(t_data *data)
 {
@@ -18,7 +18,7 @@ void    ft_add_textures(t_data *data)
     int     i;
     
     i = -1;
-    while (++i < 4)
+    while (data->map[++i])
     {
         texter = ft_split(data->map[i], ", \n");
         if (texter[0] == NULL)
@@ -33,18 +33,33 @@ void    ft_add_textures(t_data *data)
             data->carte.east_texture = ft_strdup(texter[1]);
         ft_spl_free(texter);
     }
-    if (open(data->carte.north_texture, O_RDONLY) < 0
-		|| open(data->carte.south_texture, O_RDONLY) < 0
-		|| open(data->carte.east_texture, O_RDONLY) < 0
-		|| open(data->carte.west_texture, O_RDONLY) < 0)
-		print_error("", "Erorr in open textures", 1);
+    // if (open(data->carte.north_texture, O_RDONLY) < 0
+	// 	|| open(data->carte.south_texture, O_RDONLY) < 0
+	// 	|| open(data->carte.east_texture, O_RDONLY) < 0
+	// 	|| open(data->carte.west_texture, O_RDONLY) < 0)
+	// 	print_error("", "Erorr in open textures", 1);
 }
 static void ft_type_colors(t_color *col, char **colors)
 {
-    col->red = ft_atoi(colors[0]);
-    col->green = ft_atoi(colors[1]);
-    col->blue = ft_atoi(colors[2]);
+	if (colors[0] && colors[1] && colors[2] && colors[3] == NULL)
+	{
+		int red = ft_atoi(colors[0]);
+		int green = ft_atoi(colors[1]);
+		int blue = ft_atoi(colors[2]);
+
+		if ((red >= 0 && red <= 255) && (green >= 0 && green <= 255) && (blue >= 0 && blue <= 255))
+		{
+			col->red = red;
+			col->green = green;
+			col->blue = blue;
+		}
+		else
+			print_error("", "RGB values out of range (0-255)", 1);
+	}
+	else
+		print_error("", "problem in colors: invalid format", 1);
 }
+
 
 void    ft_add_colors(t_data *data)
 {
@@ -75,6 +90,7 @@ void	ft_take_cub(t_data *data)
 {
 	int		i;
 	int		j;
+	char	*line;
 
 	i = 0;
 	j = 0;
@@ -85,14 +101,26 @@ void	ft_take_cub(t_data *data)
 	data->carte.col = 0;
 	while (data->map[i])
 	{
+		if (data->map[i][0] == ' ')
+		{
+			line = ft_strtrim(data->map[i], " ");
+			if (line[0] == '1' || line[0] == '0')
+			{
+				data->carte.cub[j++] = ft_strndup(data->map[i],
+					ft_strlen(data->map[i]) - \
+					ft_find_newline(data->map[i]));
+				if (data->carte.col < (int)ft_strlen(data->carte.cub[j - 1]))
+					data->carte.col = ft_strlen(data->carte.cub[j - 1]);
+			}
+		}
+		
 		if (data->map[i][0] == '1'
-				|| data->map[i][0] == ' '
 				|| data->map[i][0] == '0')
 		{
 			data->carte.cub[j++] = ft_strndup(data->map[i],
 					ft_strlen(data->map[i]) - \
 					ft_find_newline(data->map[i]));
-			if (data->carte.col < ft_strlen(data->carte.cub[j - 1]))
+			if (data->carte.col < (int)ft_strlen(data->carte.cub[j - 1]))
 				data->carte.col = ft_strlen(data->carte.cub[j - 1]);
 		}
 		i++;
@@ -108,6 +136,8 @@ void    ft_find_player_pos(t_map *map)
 	row = 0;
 	while (map->cub[row])
 	{
+		printf("\n%s\n", map->cub[row]);
+		
 		col = 0;
 		while (map->cub[row][col])
 		{
@@ -115,8 +145,9 @@ void    ft_find_player_pos(t_map *map)
 			{
 				map->player.x = row;
 				map->player.y = col;
+
 				map->starting_derection = map->cub[row][col];
-				return ;
+			
 			}
 			col++;
 		}

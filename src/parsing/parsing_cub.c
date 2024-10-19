@@ -6,20 +6,27 @@
 /*   By: hel-band <hel-band@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 19:56:16 by hel-band          #+#    #+#             */
-/*   Updated: 2024/10/18 11:11:35 by hel-band         ###   ########.fr       */
+/*   Updated: 2024/10/19 10:33:09 by hel-band         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d.h"
+#include "../include/cub3d.h"
 
-int ft_arroud_player(char **cub, int row, int col)
+int ft_arroud_player(char **cub, int row, int col ,t_data *data)
 {
+    row = data->carte.player.x;
+    col = data->carte.player.y;
+   if (col <= 0 || col >= data->carte.col || row <= 0 || row >= data->carte.row)
+    {
+        print_error("", "Player is too close to map boundary", 1);
+    }
+    // printf("\n%d\n %d\n", row, col);
     if (cub[row][col + 1] == ' ' || cub[row][col - 1] == ' '
-		|| cub[row + 1][col] == ' ' || cub[row - 1][col] == ' ')
-        print_error("", "Player surronded by spaces", 1);
+        || cub[row + 1][col] == ' ' || cub[row - 1][col] == ' ')
+        print_error("", "Player surrounded by spaces", 1);
     return (1);
 }
-void    ft_pars_cub(char **cub)
+void    ft_pars_cub(char **cub ,t_data *data)
 {
     int i;
     int j;
@@ -35,7 +42,7 @@ void    ft_pars_cub(char **cub)
             if (!ft_find_char(cub[i][j], " 01NSEW"))
                 print_error("", "Invalid charachter in map", 1);
             if (ft_find_char(cub[i][j], "NSEW")
-                && ft_arroud_player(cub, i, j))
+                && ft_arroud_player(cub, i, j, data))
                 flag++;
             j++;
         }
@@ -51,19 +58,19 @@ void	ft_check_cub(t_map map, int row, int col)
 {
 	if ((row == 0 && ft_check_wall(map.cub, row, col))
 		|| (row == map.row - 1 && ft_check_wall(map.cub, row, col)))
-		print_error("", "Erorr in map", 1);
+		print_error("", "Erorr in wall", 1);
 	else if (col == 0 && ft_check_wall(map.cub, row, col))
-		print_error("", "Erorr in map", 1);
-	else if (col == ft_strlen(map.cub[row]) - 1
+		print_error("", "Erorr in wall", 1);
+	else if (col == (int)ft_strlen(map.cub[row]) - 1
 		&& ft_check_wall(map.cub, row, col))
-		print_error("", "Erorr in map", 1);
+		print_error("", "Erorr in wall", 1);
 	else if ((row > 0 && row < map.row - 1)
-		&& (col > 0 && col < ft_strlen(map.cub[row]) - 1))
+		&& (col > 0 && col < (int)ft_strlen(map.cub[row]) - 1))
 	{
 		if (map.cub[row][col] == '0'
 			&& (map.cub[row + 1][col] == ' ' || map.cub[row - 1][col] == ' '
 			|| map.cub[row][col + 1] == ' ' || map.cub[row][col - 1] == ' '))
-			print_error("", "Erorr in map", 1);
+			print_error("", "Erorr in wall", 1);
 	}
 }
 

@@ -6,16 +6,16 @@
 /*   By: hel-band <hel-band@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:10:54 by hel-band          #+#    #+#             */
-/*   Updated: 2024/10/16 16:12:28 by hel-band         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:28:23 by hel-band         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d.h"
+#include "../include/cub3d.h"
 
-static void	my_free(void)
-{
-	my_malloc(2, 1);
-}
+// static void	my_free(void)
+// {
+// 	my_malloc(2, 1);
+// }
 
 static void	destroy(t_gdata **g_data)
 {

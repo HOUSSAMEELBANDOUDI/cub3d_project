@@ -6,11 +6,11 @@
 /*   By: hel-band <hel-band@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 15:17:53 by hel-band          #+#    #+#             */
-/*   Updated: 2024/10/16 18:14:02 by hel-band         ###   ########.fr       */
+/*   Updated: 2024/10/18 18:23:42 by hel-band         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d.h"
+#include "../include/cub3d.h"
 
 static int ft_get_number_line(char *av)
 {
@@ -29,39 +29,40 @@ static int ft_get_number_line(char *av)
         free(line);
         line = get_next_line(fd);
     }
-    close (fd);
+    close(fd);
     return (number_lines);
 }
 
-static void    ft_remplir_map(t_data *data)
+static void ft_remplir_map(t_data *data)
 {
     int fd;
     int i;
     
-    fd = open(data->av[1], O_RDONLY);
+    fd = open(data->carte.filename, O_RDONLY);
     if (fd == -1)
-        print_error(data->av[1], "fd ft_remplir_map:", 1);
-    data->map = ft_calloc(data->carte.nbr_line, sizeof(char *));
+        print_error("", "fd ft_remplir_map:", 1);
+    data->map = ft_calloc(data->carte.nbr_line + 1, sizeof(char *));
+    if (!data->map)
+        print_error("", "Memory allocation failed for map", 1);
     i = 0;
-    while(i < data->carte.nbr_line)
-    {
+    data->map[i] = get_next_line(fd);
+    while (i < data->carte.nbr_line && data->map[i++])
         data->map[i] = get_next_line(fd);
-        i++;
-    }
     data->map[i] = NULL;
-    close (fd);
+    close(fd);
 }
 
-int ft_pars_map(t_data *data)
+void ft_pars_map(t_data *data)
 {
     int fd;
 
-    fd = open(data->av[1], O_RDONLY);
+    fd = open(data->carte.filename, O_RDONLY);
     if (fd == -1)
-        print_error(data->av[1], "fd pars_map:", 1);
-    data->carte.nbr_line = ft_get_number_line(data->av[1]);
+        print_error(data->carte.filename, "fd pars_map:", 1);
+    data->carte.nbr_line = ft_get_number_line(data->carte.filename);
     if (data->carte.nbr_line == 0)
-        print_error(data->av[1], "nbr_line_in_map_invalid:", 1);
-    close (fd);
+        print_error(data->carte.filename, "nbr_line_in_map_invalid:", 1);
+
+    close(fd);
     ft_remplir_map(data);
 }

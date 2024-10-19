@@ -6,11 +6,11 @@
 /*   By: hel-band <hel-band@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:59:27 by hel-band          #+#    #+#             */
-/*   Updated: 2024/10/16 17:22:28 by hel-band         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:04:40 by hel-band         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d.h"
+#include "../include/cub3d.h"
 
 void	ft_spl_free(char **spl)
 {

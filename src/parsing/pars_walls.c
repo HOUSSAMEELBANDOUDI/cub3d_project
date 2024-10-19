@@ -6,11 +6,11 @@
 /*   By: hel-band <hel-band@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 10:24:33 by hel-band          #+#    #+#             */
-/*   Updated: 2024/10/18 11:09:27 by hel-band         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:04:40 by hel-band         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d.h"
+#include "../include/cub3d.h"
 
 int	ft_check_wall(char **cub, int row, int col)
 {

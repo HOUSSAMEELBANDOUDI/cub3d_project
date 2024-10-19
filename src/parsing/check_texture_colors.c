@@ -6,64 +6,77 @@
 /*   By: hel-band <hel-band@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 10:13:29 by hel-band          #+#    #+#             */
-/*   Updated: 2024/10/16 18:23:08 by hel-band         ###   ########.fr       */
+/*   Updated: 2024/10/18 20:44:05 by hel-band         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d.h"
+#include "../include/cub3d.h"
 
-static  void    ft_pars_texture(t_data *data, int *ptr)
+static void ft_pars_texture(t_data *data, int *ptr)
 {
-    int flag;
+    int flag = 0;
+    int color = 0;
+    char *line;
 
-    flag = 0;
-    while (data->map[*ptr] && *ptr < 4)
+    while (data->map[*ptr])
     {
-        if (ft_strncmp(data->map[*ptr], "NO ", 3) == 0
-            || ft_strncmp(data->map[*ptr], "SO ", 3) == 0
-            || ft_strncmp(data->map[*ptr], "WE ", 3) == 0
-            || ft_strncmp(data->map[*ptr], "EA ", 3) == 0)
+        while (data->map[*ptr] && ft_strtrim(data->map[*ptr], " \t") == NULL)
+            (*ptr)++;
+        if (!data->map[*ptr])
+            break;
+        if (data->map[*ptr][0] == '1' || data->map[*ptr][0] == '0')
+            break;
+        line = ft_strtrim(data->map[*ptr], " ");
+        if (!line)
+            print_error("", "Error trimming line", 1);
+        if (ft_strncmp(line, "NO ", 3) == 0 ||
+            ft_strncmp(line, "SO ", 3) == 0 ||
+            ft_strncmp(line, "WE ", 3) == 0 ||
+            ft_strncmp(line, "EA ", 3) == 0)
             flag++;
+        else if (ft_strncmp(line, "F ", 2) == 0 ||
+            ft_strncmp(line, "C ", 2) == 0)
+            color++;
+        free(line);
         (*ptr)++;
     }
-    if (flag != 4 && *ptr != flag)
-         print_error("", "Error in textures", 1);
+
+    if (flag != 4)
+        print_error("", "Error in textures ", 1);
+    if (color!= 2)
+        print_error("", "Error in  colors", 1);
+
     if (*ptr == 0)
         print_error("", "Empty map", 1);
 }
 
-static  void ft_pars_colors(t_data *data, int *ptr)
+void ft_find_content(t_data *data)
 {
-    int flag;
-    int i;
-    int start;
-    
-    i = *ptr + 2;
-    start = *ptr;
+    int i = 0;
 
-    flag = 0;
-    while (data->map[*ptr] && *ptr < i)
-    {
-        if (ft_strncmp(data->map[*ptr], "F ", 2) == 0
-            || ft_strncmp(data->map[*ptr], "C ", 2) == 0)
-            flag++;
-        (*ptr)++;
-    }
-    if (flag != 2 && *ptr - start != flag)
-        print_error("", "Error in colors", 1);
-}
-
-void    ft_find_content(t_data *data)
-{
-    int i;
-    
-    i = 0;
     ft_pars_texture(data, &i);
-    while (data->map[i] && ft_strncmp(data->map[i], "\n", 1) == 0)
-        i++;
-    ft_pars_colors(data, &i);
-    while (data->map[i] && ft_strncmp(data->map[i], "\n", 1) == 0)
+    while (data->map[i] && ft_strtrim(data->map[i], " \t") == NULL)
         i++;
     if (data->map[i] == NULL)
-        print_error("", "No map include", 1);
+        print_error("", "No map included", 1);
 }
+// static  void ft_pars_colors(t_data *data, int *ptr)
+// {
+//     int flag;
+//     int i;
+//     int start;
+    
+//     i = *ptr + 2;
+//     start = *ptr;
+
+//     flag = 0;
+//     while (data->map[*ptr] && *ptr < i)
+//     {
+//         if (ft_strncmp(data->map[*ptr], "F ", 2) == 0
+//             || ft_strncmp(data->map[*ptr], "C ", 2) == 0)
+//             flag++;
+//         (*ptr)++;
+//     }
+//     if (flag != 2 && *ptr - start != flag)
+//         print_error("", "Error in colors", 1);
+// }
